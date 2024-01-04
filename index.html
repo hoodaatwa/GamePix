@@ -83,11 +83,11 @@
             padding: 10px;
             text-align: center;
             text-decoration: none;
-            border-radius: 5px; /* Remove border-radius */
+            border-radius: 5px;
             margin-top: 10px;
             cursor: pointer;
-            border: none; /* Remove border */
-            outline: none; /* Remove outline */
+            border: none;
+            outline: none;
         }
 
         .MuiButton-root:hover {
@@ -161,12 +161,44 @@
     <!-- Container to display game information -->
     <div id="gameInfoContainer"></div>
 
+    <!-- Load More Button -->
+<center>
+    <button id="loadMoreBtn" class="MuiButton-root" onclick="loadMoreGames()">Load More</button>
+</center>
     <script>
+        let currentPage = 1;
+
+        async function loadMoreGames() {
+            try {
+                const nextPage = currentPage + 1;
+                const response = await fetch(`https://feeds.gamepix.com/v1/json/?order=quality&page=${nextPage}&pagination=96&sid=E4515`);
+                const data = await response.json();
+
+                if (data && data.items && Array.isArray(data.items) && data.items.length > 0) {
+                    data.items.forEach(createGameElements);
+                    currentPage = nextPage;
+                } else {
+                    console.error('No more game data available.');
+                    document.getElementById('loadMoreBtn').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error fetching more game data:', error);
+            }
+        }
+
         // Function to fetch game data from the API
         async function fetchGameData() {
             try {
-                const response = await fetch('https://feeds.gamepix.com/v1/json/?order=quality&page=1&pagination=96');
+                const response = await fetch('https://feeds.gamepix.com/v1/json/?order=quality&page=1&pagination=96&sid=E4515');
                 const data = await response.json();
+
+                if (data && data.items && Array.isArray(data.items) && data.items.length > 0) {
+                    data.items.forEach(createGameElements);
+                    document.getElementById('loadMoreBtn').style.display = 'block';
+                } else {
+                    console.error('No game data available.');
+                }
+
                 return data;
             } catch (error) {
                 console.error('Error fetching game data:', error);
