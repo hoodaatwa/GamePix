@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Download Mobile Games</title>
+
+    <!-- Material-UI styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/system@5.0.1/dist/mui.min.css"
+        integrity="sha384-GLhlTQ8iKSeUcycr6i3AxSsLOp/5StETHxHjOVq9XuWqIbbVZNyQOdX+yG5bwDciF"
+        crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500&family=Rubik+Broken+Fax&family=Rubik+Doodle+Triangles&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0px;
+            background-color: #446FAA1A;
+        }
+
+        #loadingContainer {
+            display: block;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        #gameInfoContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .gameContainer {
+            margin: 20px;
+            max-width: 400px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #searchInput {
+            margin-bottom: 20px;
+            width: 100%;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        .MuiButton-root {
+            display: block;
+            color: #fff;
+            background-color: #1976D2;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .MuiButton-root:hover {
+            background-color: #135ba1;
+        }
+
+        .MuiTextField-root {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        /* Spinner styles */
+        .custom-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Title -->
+    <h1>No Download Mobile Games</h1>
+
+    <!-- Search Input -->
+    <div id="searchInput">
+        <input type="text" placeholder="Search games by name" oninput="filterGames()" class="MuiTextField-root">
+    </div>
+
+    <!-- Loading container with script and spinner -->
+    <div id="loadingContainer">
+        <div>
+            <center>
+                <script type="text/javascript">
+                    atOptions = {
+                        'key': '1e2ff3c195dd1e4ca6e62d81bec919e2',
+                        'format': 'iframe',
+                        'height': 250,
+                        'width': 300,
+                        'params': {}
+                    };
+                    document.write('<scr' + 'ipt type="text/javascript" src="//www.highcpmcreativeformat.com/1e2ff3c195dd1e4ca6e62d81bec919e2/invoke.js"></scr' + 'ipt>');
+                </script>
+            </center>
+        </div>
+        <br></br>
+        <div>
+            <center>
+                <div class="custom-spinner"></div><br></br>
+            
+            <p>Loading...</p>
+</center>
+        </div>
+    </div>
+
+    <!-- Container to display game information -->
+    <div id="gameInfoContainer"></div>
+
+    <script>
+        // Function to fetch game data from the API
+        async function fetchGameData() {
+            try {
+                const response = await fetch('https://feeds.gamepix.com/v1/json/?order=quality&page=1&pagination=96');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching game data:', error);
+                return [];
+            }
+        }
+
+        // Function to create HTML elements for game information
+        function createGameElements(game) {
+            const container = document.getElementById('gameInfoContainer');
+
+            // Create elements
+            const gameContainer = document.createElement('div');
+            gameContainer.classList.add('gameContainer', 'MuiPaper-root');
+            const imageElement = document.createElement('img');
+            const titleElement = document.createElement('h2');
+            const descriptionElement = document.createElement('p');
+            const playButton = document.createElement('button');
+
+            // Set content and attributes
+            imageElement.src = game.image;
+            titleElement.textContent = game.title;
+            descriptionElement.textContent = game.description;
+            playButton.textContent = 'Play Now';
+            playButton.classList.add('MuiButton-root');
+            playButton.addEventListener('click', () => window.open(game.url, '_blank'));
+
+            // Append elements to the game container
+            gameContainer.appendChild(imageElement);
+            gameContainer.appendChild(titleElement);
+            gameContainer.appendChild(descriptionElement);
+            gameContainer.appendChild(playButton);
+
+            // Append game container to the main container
+            container.appendChild(gameContainer);
+        }
+
+        function filterGames() {
+            const searchInput = document.querySelector('.MuiTextField-root').value.toLowerCase();
+            const gameContainers = document.querySelectorAll('.gameContainer');
+
+            gameContainers.forEach((gameContainer) => {
+                const title = gameContainer.querySelector('h2').textContent.toLowerCase();
+                if (title.includes(searchInput)) {
+                    gameContainer.style.display = 'block';
+                } else {
+                    gameContainer.style.display = 'none';
+                }
+            });
+        }
+
+        // Fetch game data and display it
+        fetchGameData().then((data) => {
+            // Hide loading container
+            document.getElementById('loadingContainer').style.display = 'none';
+
+            // Check if data is available
+            if (data && data.items && Array.isArray(data.items) && data.items.length > 0) {
+                // Loop through game data and create HTML elements for each game
+                data.items.forEach(createGameElements);
+            } else {
+                console.error('No game data available.');
+            }
+        });
+    </script>
+
+</body>
+
+</html>
