@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No Download Mobile Games</title>
+    <title>Gamepix ألعاب</title>
 
     <!-- Material-UI styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
@@ -68,7 +68,11 @@
         #searchInput {
             margin-bottom: 20px;
             width: 100%;
-            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        .MuiInputBase-input {
+            height: 40px; /* Adjust the height as needed */
             box-sizing: border-box;
         }
 
@@ -79,9 +83,11 @@
             padding: 10px;
             text-align: center;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 5px; /* Remove border-radius */
             margin-top: 10px;
             cursor: pointer;
+            border: none; /* Remove border */
+            outline: none; /* Remove outline */
         }
 
         .MuiButton-root:hover {
@@ -119,11 +125,11 @@
 
 <body>
     <!-- Title -->
-    <h1>No Download Mobile Games</h1>
+    <h1>GamePix العاب</h1>
 
     <!-- Search Input -->
     <div id="searchInput">
-        <input type="text" placeholder="Search games by name" oninput="filterGames()" class="MuiTextField-root">
+        <input type="text" placeholder="Search games by name" oninput="filterGames()" class="MuiTextField-root MuiInputBase-input">
     </div>
 
     <!-- Loading container with script and spinner -->
